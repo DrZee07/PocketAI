@@ -335,7 +335,19 @@ export default function ChatPage() {
           messageContent.toLowerCase().includes("markdown") ||
           messageContent.toLowerCase().includes("format")
         ) {
-          response = `I support rich text formatting using Markdown! You can use:\n\n**Bold text** with \`**double asterisks**\`\n*Italic text* with \`*single asterisks*\`\n\`Code\` with \`backticks\`\n\nYou can also create lists:\n- Item 1\n- Item 2\n\nOr numbered lists:\n1. First item\n2. Second item`
+          response = `I support rich text formatting using Markdown! You can use:
+
+**Bold text** with \`**double asterisks**\`
+*Italic text* with \`*single asterisks*\`
+\`Code\` with \`backticks\`
+
+You can also create lists:
+- Item 1
+- Item 2
+
+Or numbered lists:
+1. First item
+2. Second item`
         } else if (messageContent.toLowerCase().includes("encrypt")) {
           response = `End-to-end encryption is ${isEncrypted ? "enabled" : "disabled"} for this conversation. ${isEncrypted ? "Your messages are encrypted and can only be read by the intended recipients." : "You can enable encryption to secure your messages."}`
         } else if (isGroupChat) {
