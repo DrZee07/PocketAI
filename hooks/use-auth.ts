@@ -115,7 +115,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{
+      initialValue={{
         user,
         isLoading,
         isAuthenticated: !!user,
