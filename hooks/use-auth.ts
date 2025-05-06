@@ -1,7 +1,7 @@
 "use client"
 
-import type React from "react"
 import { useState, useEffect, createContext, useContext } from "react"
+import type { ReactNode } from "react"
 
 interface User {
   id: string
@@ -28,8 +28,8 @@ const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
 })
 
-// Provider component
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+// Provider component - using createElement instead of JSX
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -93,21 +93,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  // Return the provider with the value
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        isAuthenticated: !!user,
-        login,
-        register,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  )
+  // Create the context value
+  const contextValue = {
+    user,
+    isLoading,
+    isAuthenticated: !!user,
+    login,
+    register,
+    logout,
+  }
+
+  // Use React.createElement instead of JSX
+  return AuthContext.Provider, { value: contextValue }, children
 }
 
 // Hook to use the auth context
