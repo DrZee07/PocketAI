@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, createContext, useContext } from "react"
 
 interface User {
@@ -19,6 +18,7 @@ interface AuthContextType {
   logout: () => Promise<void>
 }
 
+// Create the context with default values
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
@@ -28,15 +28,14 @@ const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
 })
 
+// Provider component
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check if user is already logged in
     const checkAuth = async () => {
       try {
-        // In a real app, this would verify the token with your backend
         const storedUser = localStorage.getItem("user")
         if (storedUser) {
           setUser(JSON.parse(storedUser))
@@ -47,23 +46,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
       }
     }
-
     checkAuth()
   }, [])
 
   const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      // In a real app, this would make an API call to your backend
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API delay
-
-      // Mock successful login
-      const mockUser = {
-        id: "user-1",
-        name: "John Doe",
-        email,
-      }
-
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const mockUser = { id: "user-1", name: "John Doe", email }
       setUser(mockUser)
       localStorage.setItem("user", JSON.stringify(mockUser))
     } catch (error) {
@@ -77,16 +67,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true)
     try {
-      // In a real app, this would make an API call to your backend
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API delay
-
-      // Mock successful registration
-      const mockUser = {
-        id: "user-" + Date.now(),
-        name,
-        email,
-      }
-
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const mockUser = { id: "user-" + Date.now(), name, email }
       setUser(mockUser)
       localStorage.setItem("user", JSON.stringify(mockUser))
     } catch (error) {
@@ -100,9 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     setIsLoading(true)
     try {
-      // In a real app, this would make an API call to your backend
-      await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate API delay
-
+      await new Promise((resolve) => setTimeout(resolve, 500))
       setUser(null)
       localStorage.removeItem("user")
     } catch (error) {
@@ -113,16 +93,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const contextValue = {
-    user,
-    isLoading,
-    isAuthenticated: !!user,
-    login,
-    register,
-    logout,
-  }
-
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+  // Return the provider with the value
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        isAuthenticated: !!user,
+        login,
+        register,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
+// Hook to use the auth context
 export const useAuth = () => useContext(AuthContext)
