@@ -149,7 +149,7 @@ export function ChatMessage({ message, isUser, timestamp, userId, onReply, class
 
   return (
     <div
-      className={cn("flex", isUser ? "justify-end" : "justify-start")}
+      className={cn("flex", isUser ? "justify-end" : "justify-start", className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
